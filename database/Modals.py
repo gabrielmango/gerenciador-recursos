@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, Date, Float, ForeignKey, Boolean
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import IntegrityError
 
 engine = create_engine('sqlite:///banco_dados.db')
 Session = sessionmaker(bind=engine)

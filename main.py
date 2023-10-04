@@ -1,8 +1,6 @@
 from GerenciadorPedidos import GerenciadorPedidos
-from database.GerenciadorBancoDados import GerenciadorBancoDados
 
 import os
-from pprint import pprint
 
 def existe_pedidos(caminho_pasta):
     arquivos_pasta = os.listdir(caminho_pasta)
@@ -18,7 +16,9 @@ def main():
 
     if existe_pedidos(PEDIDOS_PATH):
         gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
+
         gerenciador_pedidos.cadastrar_cliente()
+        gerenciador_pedidos.verificar_estoque()
         gerenciador_pedidos.cadastrar_pedido()
         gerenciador_pedidos.cadastrar_entrega()
         gerenciador_pedidos.cadastrar_carrinho_produtos()

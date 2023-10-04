@@ -1,7 +1,7 @@
 from database.Conexao import session
 from database.Modals import Cliente, Endereco, Produtos, Estoque, InformacoesPagamento, Pedido, Endereco, Contato
 
-from sqlalchemy import func
+from sqlalchemy import update
 from sqlalchemy.exc import SQLAlchemyError
 from time import sleep
 from datetime import datetime
@@ -11,6 +11,7 @@ class GerenciadorBancoDados:
         """Inicializa a classe GerenciadorBancoDados."""
         self.sessao = session
   
+
     def _fecha_sessao(self):
         """Fecha a sessão de forma segura."""
         try:
@@ -18,6 +19,7 @@ class GerenciadorBancoDados:
         except SQLAlchemyError as e:
             self.sessao.rollback()
             raise e 
+
 
     def inserir_dados(self, tabela, dados):
         with self.sessao as sessao:
@@ -29,6 +31,7 @@ class GerenciadorBancoDados:
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
+
 
     def consulta_id_cliente(self, nome):
         with self.sessao as sessao:
@@ -62,6 +65,7 @@ class GerenciadorBancoDados:
                 self._fecha_sessao()
                 raise e
 
+
     def consulta_id_endereco(self, id_cliente):
         with self.sessao as sessao:
             try:
@@ -71,6 +75,7 @@ class GerenciadorBancoDados:
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
+
 
     def consulta_id_contato(self, id_cliente):
         with self.sessao as sessao:
@@ -82,15 +87,39 @@ class GerenciadorBancoDados:
                 self._fecha_sessao()
                 raise e
 
+
     def consulta_id_produto(self, nome):
         with self.sessao as sessao:
             try:
-                consulta = sessao.query(Produtos.nome).filter(Produtos.nome == nome)
+                consulta = sessao.query(Produtos.id_produto).filter(Produtos.nome == nome)
                 dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
+
+
+    def consulta_estoque(self, id_produto):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(Estoque.quantidade).filter(Estoque.id_produto == id_produto)
+                dado = consulta.first()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+            
+
+    def atualiza_estoque(self, tabela, id_produto, valores):
+        with self.sessao as sessao:
+            try:
+                atualizacao = update(tabela).where(tabela.id_produto == id_produto).values(**valores)
+                session.execute(atualizacao)
+                session.commit()
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
 
     
     def cadastra_estoque(self):

@@ -1,11 +1,9 @@
-from database.Conexao import session
 from database.GerenciadorBancoDados import GerenciadorBancoDados
-from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos, Pedido, EntregaPedido, ProdutoPedido
+from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos, Pedido, EntregaPedido, ProdutoPedido, Estoque
 
 import json
 from datetime import datetime
 from time import sleep
-from pprint import pprint
 
 
 class GerenciadorPedidos:
@@ -33,6 +31,22 @@ class GerenciadorPedidos:
             'contato': self._arquivo[0]['cliente']['contato'],
             'info_pagamento': self._arquivo[0]['cliente']['info_pagamento'],
         }
+    
+
+    def verificar_estoque(self):
+        lista_produtos = []
+        carrinho_produtos = self._arquivo[0]['produtos']
+        for produto in carrinho_produtos:
+            id_produto = self.database.consulta_id_produto(produto['nome'].upper())
+            quantidade_estoque = self.database.consulta_estoque(id_produto)
+            if quantidade_estoque - produto['quantidade'] > 0:
+                self.database.atualiza_estoque(Estoque, id_produto, {
+                    'quantidade': quantidade_estoque - produto['quantidade']
+                    })
+            else:
+                lista_produtos.append(produto['nome'])
+        for produtos in lista_produtos:
+            print(f'O produto {produtos} não possui quantidade suficiente no estoque!')
 
 
 
@@ -108,6 +122,8 @@ class GerenciadorPedidos:
                     })
 
     def cadastrar_pedido(self):
+
+
         id_cliente = self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
         id_infopagamento = self.database.consulta_id_infopagamento(self._arquivo[0]['pedido']['pagamento']['numero_cartao'])
 
