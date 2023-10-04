@@ -127,13 +127,11 @@ Se você está interessado em contribuir com o projeto, ficaremos felizes em rec
    git push origin feature-nova
    ```
 
-7. Acesse a página do seu repositório fork no GitHub e clique no botão "New Pull Request" para criar um novo Pull Request. Certifique-se de descrever suas alterações de forma clara e concisa.
+7. Acesse a página do seu repositório fork no GitHub e clique no botão "New Pull Request" para criar um novo Pull Request.
+   Certifique-se de descrever suas alterações de forma clara e concisa.
 
-A equipe do projeto revisará seu Pull Request e poderá solicitar alterações adicionais antes de mesclar suas contribuições. Agradecemos por sua colaboração!
+A equipe do projeto revisará seu Pull Request e poderá solicitar alterações adicionais antes de mesclar suas contribuições.
 
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
-```
-
-Certifique-se de substituir as informações relevantes, como o título do projeto, a descrição, os links para a documentação das bibliotecas, seu nome de usuário no GitHub e outros detalhes específicos do seu projeto. Isso deve fornecer um README.md básico com todas as seções que você mencionou.
