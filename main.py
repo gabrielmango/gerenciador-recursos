@@ -22,6 +22,7 @@ def main():
         gerenciador_pedidos.cadastrar_pedido()
         gerenciador_pedidos.cadastrar_entrega()
         gerenciador_pedidos.cadastrar_carrinho_produtos()
+        print('Dados do pedido cadastrados no Banco de Dados.')
 
 
 if __name__ == '__main__':

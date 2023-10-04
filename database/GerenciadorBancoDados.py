@@ -34,7 +34,7 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(Cliente.id_cliente).filter(Cliente.nome_completo == nome.upper())
-                dado = consulta.all()
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
@@ -45,7 +45,7 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(InformacoesPagamento.id_info_pagamento).filter(InformacoesPagamento.numero_cartao == numero)
-                dado = consulta.all()
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
@@ -56,17 +56,17 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(Pedido.id_pedido).filter(Pedido.codigo == codigo)
-                dado = consulta.all()
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
 
-    def consulta_id_endereco(self, cep):
+    def consulta_id_endereco(self, id_cliente):
         with self.sessao as sessao:
             try:
-                consulta = sessao.query(Endereco.cep).filter(Endereco.cep == cep)
-                dado = consulta.all()
+                consulta = sessao.query(Endereco.id_cliente).filter(Endereco.id_cliente == id_cliente)
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
@@ -76,7 +76,7 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(Contato.id_cliente).filter(Contato.id_cliente == id_cliente)
-                dado = consulta.all()
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
@@ -86,7 +86,7 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(Produtos.nome).filter(Produtos.nome == nome)
-                dado = consulta.all()
+                dado = consulta.first()
                 return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()

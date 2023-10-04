@@ -77,6 +77,7 @@ class Pedido(Base):
     id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
     id_info_pagamento = Column(Integer, ForeignKey('info_pagamento.id_info_pagamento'))
     codigo = Column(String(100))
+    status = Column(String(100))
     data_pedido = Column(Date)
     total_pedido = Column(Integer)
     observacao = Column(String(255))

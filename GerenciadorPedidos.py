@@ -4,8 +4,8 @@ from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Do
 
 import json
 from datetime import datetime
-from unicodedata import normalize
 from time import sleep
+from pprint import pprint
 
 
 class GerenciadorPedidos:
@@ -50,8 +50,7 @@ class GerenciadorPedidos:
             })
             sleep(1)
 
-            _id = self.database.consulta_id_cliente(dados_cliente['nome_completo'])
-            id_cliente = _id[0]
+            id_cliente = self.database.consulta_id_cliente(dados_cliente['nome_completo'])
 
             dados_endereco = dados['endereco']
             for dado in dados_endereco:
@@ -99,7 +98,6 @@ class GerenciadorPedidos:
                         'data_criacao': datetime.now(),
                         'data_alteracao': None
                     })
-                    print('documentos foi.')
                 elif chave == 'rg':
                     self.database.inserir_dados(Documentos, {
                         'id_cliente': id_cliente,
@@ -111,15 +109,16 @@ class GerenciadorPedidos:
 
     def cadastrar_pedido(self):
         id_cliente = self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
-        id_infopagamento = self.database.consulta_id_infopagamento(self._arquivo['pedido']['pagamento']['numero_cartao'])
+        id_infopagamento = self.database.consulta_id_infopagamento(self._arquivo[0]['pedido']['pagamento']['numero_cartao'])
 
         self.database.inserir_dados(Pedido, {
             'id_cliente': id_cliente,
             'id_info_pagamento':id_infopagamento,
-            'codigo': self._arquivo['pedido']['codigo'],
-            'data_pedido': self.padronizacao.formatar_data_nascimento(self._arquivo['pedido']['data_pedido']),
-            'total_pedido': self._arquivo['pedido']['total_pedido'],
-            'observacao': self._arquivo['pedido']['observacao'],
+            'status': 'PROCESSANDO PEDIDO',
+            'codigo': self._arquivo[0]['pedido']['codigo'],
+            'data_pedido': self.padronizacao.formatar_data_nascimento(self._arquivo[0]['pedido']['data_pedido']),
+            'total_pedido': self._arquivo[0]['pedido']['total_pedido'],
+            'observacao': self._arquivo[0]['pedido']['observacao'],
             'data_criacao': datetime.now(),
             'data_alteracao': None
         })
@@ -130,7 +129,7 @@ class GerenciadorPedidos:
 
         id_pedido = self.database.consulta_id_pedido(self._arquivo[0]['pedido']['codigo'])
         id_contato = self.database.consulta_id_contato(id_cliente)
-        id_endereco = self.database.consulta_id_endereco(self._arquivo[0]['entrega']['endereco_entrega']['cep'])
+        id_endereco = self.database.consulta_id_endereco(id_cliente)
 
         self.database.inserir_dados(EntregaPedido, {
             'id_pedido': id_pedido,
