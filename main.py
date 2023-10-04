@@ -20,6 +20,8 @@ def main():
         gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
         gerenciador_pedidos.cadastrar_cliente()
         gerenciador_pedidos.cadastrar_pedido()
+        gerenciador_pedidos.cadastrar_entrega()
+        gerenciador_pedidos.cadastrar_carrinho_produtos()
 
 
 if __name__ == '__main__':

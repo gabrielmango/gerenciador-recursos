@@ -1,6 +1,6 @@
 from database.Conexao import session
 from database.GerenciadorBancoDados import GerenciadorBancoDados
-from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos, Pedido, EntregaPedido
+from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos, Pedido, EntregaPedido, ProdutoPedido
 
 import json
 from datetime import datetime
@@ -48,7 +48,6 @@ class GerenciadorPedidos:
                 'data_criacao': datetime.now(),
                 'data_alteracao': None
             })
-            print('cliente foi.')
             sleep(1)
 
             _id = self.database.consulta_id_cliente(dados_cliente['nome_completo'])
@@ -67,7 +66,6 @@ class GerenciadorPedidos:
                     'data_criacao': datetime.now(),
                     'data_alteracao': None
                 })
-                print('endereco foi.')
 
             dados_contato = dados['contato']
             self.database.inserir_dados(Contato, {
@@ -79,7 +77,6 @@ class GerenciadorPedidos:
                 'data_criacao': datetime.now(),
                 'data_alteracao': None
             })
-            print('contato foi.')
 
             dados_info_pagamento = dados['info_pagamento']
             for dado in dados_info_pagamento:
@@ -91,7 +88,6 @@ class GerenciadorPedidos:
                     'data_criacao': datetime.now(),
                     'data_alteracao': None
                 })
-                print('info_pagamento foi.')
 
             dados_documentos = dados['documentos']
             for chave, valor in dados_documentos.items():
@@ -112,7 +108,6 @@ class GerenciadorPedidos:
                         'data_criacao': datetime.now(),
                         'data_alteracao': None
                     })
-                    print('documentos foi.')
 
     def cadastrar_pedido(self):
         id_cliente = self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
@@ -148,6 +143,23 @@ class GerenciadorPedidos:
             'data_criacao': datetime.now(),
             'data_alteracao': None
         })
+
+    
+    def cadastrar_carrinho_produtos(self):
+        dados = self._arquivo[0]['produtos']
+        id_pedido = self.database.consulta_id_pedido(self._arquivo[0]['pedido']['codigo'])
+
+        for dado in dados:
+            id_produto = self.database.consulta_id_produto(dado['nome'].upper())
+
+            self.database.inserir_dados(ProdutoPedido, {
+                'id_produto': id_produto,
+                'id_pedido': id_pedido,
+                'quantidade': dado['quantidade'],
+                'subtotal': dado['subtotal'],
+                'data_criacao': datetime.now(),
+                'data_alteracao': None
+            })
 
 
 

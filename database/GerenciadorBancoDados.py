@@ -44,7 +44,7 @@ class GerenciadorBancoDados:
     def consulta_id_infopagamento(self, numero):
         with self.sessao as sessao:
             try:
-                consulta = sessao.query(InformacoesPagamento.id_info_pagamento).filter(InformacoesPagamento.numero_cartao == int(numero))
+                consulta = sessao.query(InformacoesPagamento.id_info_pagamento).filter(InformacoesPagamento.numero_cartao == numero)
                 dado = consulta.all()
                 return dado[0]
             except SQLAlchemyError as e:
@@ -76,6 +76,16 @@ class GerenciadorBancoDados:
         with self.sessao as sessao:
             try:
                 consulta = sessao.query(Contato.id_cliente).filter(Contato.id_cliente == id_cliente)
+                dado = consulta.all()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
+    def consulta_id_produto(self, nome):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(Produtos.nome).filter(Produtos.nome == nome)
                 dado = consulta.all()
                 return dado[0]
             except SQLAlchemyError as e:
