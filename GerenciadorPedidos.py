@@ -1,10 +1,11 @@
 from database.Conexao import session
 from database.GerenciadorBancoDados import GerenciadorBancoDados
-from database.Modals import Cliente
+from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos
 
 import json
 from datetime import datetime
 from unicodedata import normalize
+from time import sleep
 
 
 class GerenciadorPedidos:
@@ -24,25 +25,98 @@ class GerenciadorPedidos:
     def cliente_cadastrado(self):
         return self._arquivo[0]['cliente']['cliente_cadastrado']
 
+    def _lista_dados_cliente(self):
+        return {
+            'cliente': self._arquivo[0]['cliente'],
+            'endereco': self._arquivo[0]['cliente']['endereco'],
+            'documentos': self._arquivo[0]['cliente']['documentos'],
+            'contato': self._arquivo[0]['cliente']['contato'],
+            'info_pagamento': self._arquivo[0]['cliente']['info_pagamento'],
+        }
+
+
 
     def cadastrar_cliente(self):
         if not self.cliente_cadastrado():
-            dados = self._arquivo[0]['cliente']
-            self.database.inserir_cliente({
-                'nome_completo': self.padronizacao.formatar_texto(dados['nome_completo']),
-                'data_nascimento': self.padronizacao.formatar_data_nascimento(dados['data_nascimento']),
-                'sexo': self.padronizacao.formatar_sexo(dados['sexo']),
+
+            dados = self._lista_dados_cliente()
+            dados_cliente = dados['cliente']
+            self.database.inserir_dados(Cliente, {
+                'nome_completo': self.padronizacao.formatar_texto(dados_cliente['nome_completo']),
+                'data_nascimento': self.padronizacao.formatar_data_nascimento(dados_cliente['data_nascimento']),
+                'sexo': self.padronizacao.formatar_sexo(dados_cliente['sexo']),
                 'data_criacao': datetime.now(),
                 'data_alteracao': None
             })
+            print('cliente foi.')
+            sleep(1)
 
+            _id = self.database.consulta_id_cliente(dados_cliente['nome_completo'])
+            id_cliente = _id[0]
 
-    def cadastrar_endereco(self):
-        id_cliente = self.database.consulta_id(self._arquivo[0]['cliente']['nome_completo'].upper())
-        dados = self._arquivo[0]['cliente']
-        self.database.inserir_endereco({
+            dados_endereco = dados['endereco']
+            for dado in dados_endereco:
+                self.database.inserir_dados(Endereco, {
+                    'id_cliente': id_cliente,
+                    'cep': self.padronizacao.formatar_numero_identificacao(dado['cep']),
+                    'rua': self.padronizacao.formatar_texto(dado['endereco']),
+                    'numero': dado['numero'],
+                    'bairro': self.padronizacao.formatar_texto(dado['bairro']),
+                    'cidade': self.padronizacao.formatar_texto(dado['cidade']),
+                    'estado': self.padronizacao.formatar_texto(dado['estado']),
+                    'data_criacao': datetime.now(),
+                    'data_alteracao': None
+                })
+                print('endereco foi.')
 
-        })
+            dados_contato = dados['contato']
+            self.database.inserir_dados(Contato, {
+                'id_cliente': id_cliente,
+                'email': dados_contato['email'],
+                'telefone': self.padronizacao.formatar_numero_contato(dados_contato['telefone_fixo']),
+                'celular': self.padronizacao.formatar_numero_contato(dados_contato['celular']),
+                'whatsapp': dados_contato['whatsapp'],
+                'data_criacao': datetime.now(),
+                'data_alteracao': None
+            })
+            print('contato foi.')
+
+            dados_info_pagamento = dados['info_pagamento']
+            for dado in dados_info_pagamento:
+                self.database.inserir_dados(InformacoesPagamento, {
+                    'id_cliente': id_cliente,
+                    'bandeira': self.padronizacao.formatar_texto(dado['bandeira']),
+                    'numero_cartao': dado['numero_cartao'],
+                    'data_validade': self.padronizacao.formatar_data_nascimento(dado['data_validade']),
+                    'data_criacao': datetime.now(),
+                    'data_alteracao': None
+                })
+                print('info_pagamento foi.')
+
+            dados_documentos = dados['documentos']
+            for chave, valor in dados_documentos.items():
+                if chave == 'cpf':
+                    self.database.inserir_dados(Documentos, {
+                        'id_cliente': id_cliente,
+                        'numero': self.padronizacao.formatar_numero_identificacao(valor),
+                        'tipo': 'CPF',
+                        'data_criacao': datetime.now(),
+                        'data_alteracao': None
+                    })
+                    print('documentos foi.')
+                elif chave == 'rg':
+                    self.database.inserir_dados(Documentos, {
+                        'id_cliente': id_cliente,
+                        'numero': self.padronizacao.formatar_numero_identificacao(valor),
+                        'tipo': 'IDENTIDADE',
+                        'data_criacao': datetime.now(),
+                        'data_alteracao': None
+                    })
+                    print('documentos foi.')
+
+    def cadastrar_pedido(self):
+        self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
+
 
 
 

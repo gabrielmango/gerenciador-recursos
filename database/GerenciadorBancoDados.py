@@ -1,8 +1,10 @@
 from database.Conexao import session
-from database.Modals import Cliente, Endereco
+from database.Modals import Cliente, Endereco, Produtos, Estoque
 
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
+from time import sleep
+from datetime import datetime
 
 class GerenciadorBancoDados:
     def __init__(self):
@@ -17,23 +19,13 @@ class GerenciadorBancoDados:
             self.sessao.rollback()
             raise e 
 
-    def inserir_cliente(self, dados):
+    def inserir_dados(self, tabela, dados):
         with self.sessao as sessao:
             try:
-                instancia_tabela = Cliente(**dados)
+                instancia_tabela = tabela(**dados)
                 sessao.add(instancia_tabela)
                 sessao.commit()
-            except SQLAlchemyError as e:
-                self._fecha_sessao()
-                raise e
-    
-
-    def inserir_endereco(self, dados):
-        with self.sessao as sessao:
-            try:
-                instancia_tabela = Endereco(**dados)
-                sessao.add(instancia_tabela)
-                sessao.commit()
+                sleep(0.5)
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
@@ -41,13 +33,62 @@ class GerenciadorBancoDados:
     def consulta_id_cliente(self, nome):
         with self.sessao as sessao:
             try:
-                consulta = sessao.query(Cliente.id_cliente).filter(Cliente.nome_completo == nome)
-                return consulta.first()
+                consulta = sessao.query(Cliente.id_cliente).filter(Cliente.nome_completo == nome.upper())
+                dado = consulta.all()
+                return dado[0]
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
-
-
     
+    def cadastra_estoque(self):
+        self.inserir_dados(Produtos, {
+            'nome': 'Camisetas de algodão'.upper(),
+            'categoria': 'Roupas'.upper(),
+            'tamanho': 'G',
+            'cor': 'preto'.upper(),
+            'preco_unitario': 19.90,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
 
+        self.inserir_dados(Estoque, {
+            'id_produto': 1,
+            'quantidade': 20,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
 
+        self.inserir_dados(Produtos, {
+            'nome': 'Jeans skinny'.upper(),
+            'categoria': 'Roupas'.upper(),
+            'tamanho': '42',
+            'cor': 'jeans'.upper(),
+            'preco_unitario': 49.90,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+
+        self.inserir_dados(Estoque, {
+            'id_produto': 2,
+            'quantidade': 20,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+
+        self.inserir_dados(Produtos, {
+            'nome': 'Perfume Chanel No. 5'.upper(),
+            'categoria': 'Produtos de Beleza'.upper(),
+            'tamanho': None,
+            'cor': None,
+            'preco_unitario': 299.90,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+
+        self.inserir_dados(Estoque, {
+            'id_produto': 3,
+            'quantidade': 10,
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+        

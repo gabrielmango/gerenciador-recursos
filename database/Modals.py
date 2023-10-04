@@ -9,7 +9,6 @@ session = Session()
 
 Base = declarative_base()
 
-
 class Cliente(Base):
     __tablename__ = 'clientes'
 
@@ -106,6 +105,7 @@ class Produtos(Base):
     nome = Column(String(100))
     categoria = Column(String(100))
     tamanho = Column(String(10))
+    cor = Column(String(100))
     preco_unitario = Column(Integer)
     data_criacao = Column(Date)
     data_alteracao = Column(Date)
