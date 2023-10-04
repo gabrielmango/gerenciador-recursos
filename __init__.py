@@ -8,3 +8,5 @@ sleep(1)
 
 dba = GerenciadorBancoDados()
 dba.cadastra_estoque()
+
+print('base de dados criada, estoque e produtos inseridos.')

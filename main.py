@@ -14,14 +14,12 @@ def existe_pedidos(caminho_pasta):
 
 def main():
 
-    dba = GerenciadorBancoDados()
-    dba.cadastra_estoque()
-    
-    # PEDIDOS_PATH = 'entrada_pedidos'
+    PEDIDOS_PATH = 'entrada_pedidos'
 
-    # if existe_pedidos(PEDIDOS_PATH):
-    #     gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
-    #     gerenciador_pedidos.cadastrar_cliente()
+    if existe_pedidos(PEDIDOS_PATH):
+        gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
+        gerenciador_pedidos.cadastrar_cliente()
+        gerenciador_pedidos.cadastrar_pedido()
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 from database.Conexao import session
-from database.Modals import Cliente, Endereco, Produtos, Estoque
+from database.Modals import Cliente, Endereco, Produtos, Estoque, InformacoesPagamento, Pedido, Endereco, Contato
 
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
@@ -39,6 +39,49 @@ class GerenciadorBancoDados:
             except SQLAlchemyError as e:
                 self._fecha_sessao()
                 raise e
+    
+
+    def consulta_id_infopagamento(self, numero):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(InformacoesPagamento.id_info_pagamento).filter(InformacoesPagamento.numero_cartao == int(numero))
+                dado = consulta.all()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
+
+    def consulta_id_pedido(self, codigo):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(Pedido.id_pedido).filter(Pedido.codigo == codigo)
+                dado = consulta.all()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
+    def consulta_id_endereco(self, cep):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(Endereco.cep).filter(Endereco.cep == cep)
+                dado = consulta.all()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
+    def consulta_id_contato(self, id_cliente):
+        with self.sessao as sessao:
+            try:
+                consulta = sessao.query(Contato.id_cliente).filter(Contato.id_cliente == id_cliente)
+                dado = consulta.all()
+                return dado[0]
+            except SQLAlchemyError as e:
+                self._fecha_sessao()
+                raise e
+
     
     def cadastra_estoque(self):
         self.inserir_dados(Produtos, {

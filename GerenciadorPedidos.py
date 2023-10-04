@@ -1,6 +1,6 @@
 from database.Conexao import session
 from database.GerenciadorBancoDados import GerenciadorBancoDados
-from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos
+from database.Modals import Cliente, Endereco, Contato, InformacoesPagamento, Documentos, Pedido, EntregaPedido
 
 import json
 from datetime import datetime
@@ -115,7 +115,41 @@ class GerenciadorPedidos:
                     print('documentos foi.')
 
     def cadastrar_pedido(self):
-        self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
+        id_cliente = self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
+        id_infopagamento = self.database.consulta_id_infopagamento(self._arquivo['pedido']['pagamento']['numero_cartao'])
+
+        self.database.inserir_dados(Pedido, {
+            'id_cliente': id_cliente,
+            'id_info_pagamento':id_infopagamento,
+            'codigo': self._arquivo['pedido']['codigo'],
+            'data_pedido': self.padronizacao.formatar_data_nascimento(self._arquivo['pedido']['data_pedido']),
+            'total_pedido': self._arquivo['pedido']['total_pedido'],
+            'observacao': self._arquivo['pedido']['observacao'],
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+    
+
+    def cadastrar_entrega(self):
+        id_cliente = self.database.consulta_id_cliente(self._arquivo[0]['cliente']['nome_completo'])
+
+        id_pedido = self.database.consulta_id_pedido(self._arquivo[0]['pedido']['codigo'])
+        id_contato = self.database.consulta_id_contato(id_cliente)
+        id_endereco = self.database.consulta_id_endereco(self._arquivo[0]['entrega']['endereco_entrega']['cep'])
+
+        self.database.inserir_dados(EntregaPedido, {
+            'id_pedido': id_pedido,
+            'id_contato': id_contato,
+            'id_endereco': id_endereco,
+            'frete': self._arquivo[0]['entrega']['frete'],
+            'previsao_entrega': self.padronizacao.formatar_data_nascimento(self._arquivo[0]['entrega']['previsao']),
+            'responsavel_recebimento': self.padronizacao.formatar_texto(self._arquivo[0]['entrega']['responsavel']),
+            'observacao': self.padronizacao.formatar_texto(self._arquivo[0]['entrega']['observacao']),
+            'data_criacao': datetime.now(),
+            'data_alteracao': None
+        })
+
+
 
 
 
