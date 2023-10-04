@@ -1,0 +1,96 @@
+[
+    {
+        "pedido": {
+            "codigo": "0001",
+            "data_pedido": "03/10/2023",
+            "total_pedido": 409.5,
+            "pagamento": {
+                "metodo": "Cartão de Crédito",
+                "bandeira": "MasterCard",
+                "numero_cartao": "5123 8647 6795 0025",
+                "data_validade": "04/10/2024"
+            },
+            "observacao": "Enbalar pra presente dias dos pais."
+        },
+        "entrega": {
+            "frete": 19.90,
+            "previsao": "10/10/2023",
+            "endereco_entrega": {
+                "cep": "68927-399",
+                "endereco": "Travessa L4 do Provedor",
+                "numero": 677,
+                "bairro": "Provedor",
+                "cidade": "Santana",
+                "estado": "AP"
+            },
+            "responsavel": "Renan Anthony Moraes",
+            "contato": {
+                "telefone_fixo": "(96) 2533-2661",
+                "celular": "(96) 99828-9892",
+                "whatsapp": true
+            },
+            "observacao": "Entregar após às 18h."
+        },
+        "produtos": [
+            {
+                "nome": "Camisetas de algodão",
+                "categoria": "Roupas",
+                "quantidade": 3,
+                "preco_unitario": 19.90,
+                "subtotal": 59.7
+            },
+            {
+                "nome": "Jeans skinny",
+                "categoria": "Roupas",
+                "quantidade": 1,
+                "preco_unitario": 49.90,
+                "subtotal": 49.90
+            },
+            {
+                "nome": "Perfume Chanel No. 5",
+                "categoria": "Produtos de Beleza",
+                "quantidade": 1,
+                "preco_unitario": 299.90,
+                "subtotal": 299.90
+            }
+        ],
+        "cliente": {
+            "cliente_cadastrado": false,
+            "nome_completo": "Heloise Rafaela Moraes",
+            "data_nascimento": "25/09/1961",
+            "sexo": "Feminino",
+            "documentos":{
+                "cpf": "653.116.687-84",
+                "rg": "20.037.708-5"
+            },
+            "endereco": [
+                {
+                    "cep": "68927-399",
+                    "endereco": "Travessa L4 do Provedor",
+                    "numero": 677,
+                    "bairro": "Provedor",
+                    "cidade": "Santana",
+                    "estado": "AP"
+                }
+            ],
+            "contato": {
+                "email": "heloise_rafaela_moraes@myself.com",
+                "telefone_fixo": "(96) 2533-2661",
+                "celular": "(96) 99828-9892",
+                "whatsapp": true
+            },
+            "info_pagamento": [
+                {
+                    "bandeira": "MasterCard",
+                    "numero_cartao": "5123 8647 6795 0025",
+                    "data_validade": "04/10/2024"
+                },
+                {
+                    "bandeira": "Visa",
+                    "numero_cartao": "4916 2070 7190 9457",
+                    "data_validade": "04/09/2025"
+                }
+            ]
+        }
+    }
+]
