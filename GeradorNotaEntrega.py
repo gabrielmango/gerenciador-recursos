@@ -1,11 +1,43 @@
 import json
 
 class GeradorNotaEntrega:
+    """
+    Esta classe permite gerar uma nota de entrega com base em dados de um pedido.
+    Os dados do pedido devem ser fornecidos por meio de um arquivo JSON.
+
+    Args:
+        caminho_arquivo (str): O caminho para o arquivo JSON contendo os dados do pedido.
+
+    Attributes:
+        _arquivo (dict): Um dicionário que armazena os dados do pedido carregados a partir do arquivo JSON.
+
+    Raises:
+        FileNotFoundError: Se o arquivo especificado em caminho_arquivo não for encontrado.
+    """
     def __init__(self, caminho_arquivo):
+        """
+        Inicializa uma instância do GeradorNotaEntrega com o caminho para o arquivo JSON.
+
+        Args:
+            caminho_arquivo (str): O caminho para o arquivo JSON contendo os dados do pedido.
+
+        """
         self._arquivo = self.abrir_arquivo(caminho_arquivo)
 
 
     def abrir_arquivo(self, caminho_arquivo):
+        """
+        Abre e carrega os dados de um arquivo JSON.
+
+        Args:
+            caminho_arquivo (str): O caminho para o arquivo JSON contendo os dados do pedido.
+
+        Returns:
+            dict: Um dicionário com os dados do pedido carregados do arquivo JSON.
+
+        Raises:
+            FileNotFoundError: Se o arquivo especificado em caminho_arquivo não for encontrado.
+        """
         try:
             with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
                 return json.load(arquivo)
@@ -13,6 +45,13 @@ class GeradorNotaEntrega:
             raise e
 
     def criar_nota_entrega(self):
+        """
+        Cria uma nota de entrega com base nos dados do pedido carregados.
+
+        A nota de entrega é escrita em um arquivo chamado 'nota_de_entrega.txt' no formato de texto.
+        Os dados necessários para criar a nota de entrega são extraídos do dicionário de dados do pedido.
+
+        """
         dados_pedido = self._arquivo
         with open('nota_de_entrega.txt', 'w', encoding='utf-8') as arquivo:
             pedido = dados_pedido[0]['pedido']
