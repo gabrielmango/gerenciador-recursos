@@ -1,0 +1,31 @@
+Detalhes do Pedido:
+Código do Pedido: 0001
+Data do Pedido: 03/10/2023
+Total do Pedido: R$409.50
+Método de Pagamento: Cartão de Crédito
+Observação: Enbalar pra presente dias dos pais.
+
+Detalhes de Entrega:
+Valor do Frete: R$19.90
+Previsão de Entrega: 10/10/2023
+Endereço de Entrega: Travessa L4 do Provedor, 677
+Bairro: Provedor
+Cidade: Santana
+Estado: AP
+Responsável pela Entrega: Renan Anthony Moraes
+Telefone Fixo: (96) 2533-2661
+Celular: (96) 99828-9892
+WhatsApp: Sim
+Observação de Entrega: Entregar após às 18h.
+
+Produtos:
+Nome: Camisetas de algodão
+Nome: Jeans skinny
+Nome: Perfume Chanel No. 5
+Informações do Cliente:
+Cliente Cadastrado: Não
+Nome Completo: Heloise Rafaela Moraes
+Endereço de Entrega: Travessa L4 do Provedor, 677
+Bairro: Provedor
+Cidade: Santana
+Estado: AP

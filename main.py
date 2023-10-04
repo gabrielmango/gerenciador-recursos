@@ -1,4 +1,5 @@
 from GerenciadorPedidos import GerenciadorPedidos
+from GeradorNotaEntrega import GeradorNotaEntrega
 
 import os
 
@@ -16,6 +17,7 @@ def main():
 
     if existe_pedidos(PEDIDOS_PATH):
         gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
+        gerador_nota_entrega = GeradorNotaEntrega(existe_pedidos(PEDIDOS_PATH))
 
         gerenciador_pedidos.cadastrar_cliente()
         gerenciador_pedidos.verificar_estoque()
@@ -23,6 +25,7 @@ def main():
         gerenciador_pedidos.cadastrar_entrega()
         gerenciador_pedidos.cadastrar_carrinho_produtos()
         print('Dados do pedido cadastrados no Banco de Dados.')
+        gerador_nota_entrega.criar_nota_entrega()
 
 
 if __name__ == '__main__':
