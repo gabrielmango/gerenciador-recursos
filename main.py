@@ -14,12 +14,12 @@ def existe_pedidos(caminho_pasta):
 
 def main(): 
     
-
     PEDIDOS_PATH = 'entrada_pedidos'
 
     if existe_pedidos(PEDIDOS_PATH):
         gerenciador_pedidos = GerenciadorPedidos(existe_pedidos(PEDIDOS_PATH))
         gerenciador_pedidos.cadastrar_cliente()
+        gerenciador_pedidos.cadastrar_endereco()
 
 
 if __name__ == '__main__':

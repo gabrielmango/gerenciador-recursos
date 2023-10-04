@@ -1,10 +1,9 @@
-from .database.Conexao import engine
-from .database.GerenciadorBancoDados import GerenciadorBancoDados
-from .database.Modals import Cliente
+from database.Conexao import session
+from database.GerenciadorBancoDados import GerenciadorBancoDados
+from database.Modals import Cliente
 
 import json
-import datetime
-from sqlalchemy.orm import Session
+from datetime import datetime
 from unicodedata import normalize
 
 
@@ -27,16 +26,23 @@ class GerenciadorPedidos:
 
 
     def cadastrar_cliente(self):
-        if self.cliente_cadastrado:
+        if not self.cliente_cadastrado():
             dados = self._arquivo[0]['cliente']
-            dados_inserir = {
+            self.database.inserir_cliente({
                 'nome_completo': self.padronizacao.formatar_texto(dados['nome_completo']),
                 'data_nascimento': self.padronizacao.formatar_data_nascimento(dados['data_nascimento']),
                 'sexo': self.padronizacao.formatar_sexo(dados['sexo']),
-                'data_criacao': datetime.datetime.now(),
+                'data_criacao': datetime.now(),
                 'data_alteracao': None
-            }
-            self.database.inserir_dados(Cliente,dados_inserir)
+            })
+
+
+    def cadastrar_endereco(self):
+        id_cliente = self.database.consulta_id(self._arquivo[0]['cliente']['nome_completo'].upper())
+        dados = self._arquivo[0]['cliente']
+        self.database.inserir_endereco({
+
+        })
 
 
 
@@ -71,9 +77,11 @@ class PadronizaDados:
         texto_formatado = texto_formatado.split('/')
         
         if int(texto_formatado[1]) > 12:
-            return f'{texto_formatado[2]}-{texto_formatado[0]}-{texto_formatado[1]}'
+            data = f'{texto_formatado[2]}-{texto_formatado[0]}-{texto_formatado[1]}'
         else:
-            return f'{texto_formatado[2]}-{texto_formatado[1]}-{texto_formatado[0]}'
+            data = f'{texto_formatado[2]}-{texto_formatado[1]}-{texto_formatado[0]}'
+
+        return datetime.strptime(data, '%Y-%m-%d')
     
     def formatar_numero_identificacao(self, texto):
         if self.valida_texto(texto):
