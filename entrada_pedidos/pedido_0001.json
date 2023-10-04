@@ -35,6 +35,7 @@
             {
                 "nome": "Camisetas de algodão",
                 "categoria": "Roupas",
+                "tamanho": "G",
                 "quantidade": 3,
                 "preco_unitario": 19.90,
                 "subtotal": 59.7
@@ -42,6 +43,7 @@
             {
                 "nome": "Jeans skinny",
                 "categoria": "Roupas",
+                "tamanho": 42,
                 "quantidade": 1,
                 "preco_unitario": 49.90,
                 "subtotal": 49.90
